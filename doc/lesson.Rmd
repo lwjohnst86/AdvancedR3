@@ -2,6 +2,10 @@
 title: "Draft R Markdown document"
 author: "Your Name"
 output: html_document
+editor_options:
+  markdown:
+    wrap: 72
+    canonical: true
 ---
 
 ```{r setup, include=FALSE}
@@ -15,3 +19,7 @@ lipidomics %>%
   select(gender, age) %>%
   filter(age >= 25)
 ```
+
+## Header
+
+-   list one
