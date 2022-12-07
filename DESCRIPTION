@@ -19,3 +19,5 @@ LazyData: true
 Suggests: 
     lintr,
     renv
+URL: https://github.com/lwjohnst86/AdvancedR3
+BugReports: https://github.com/lwjohnst86/AdvancedR3/issues
