@@ -9,17 +9,18 @@ editor_options:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+source(here::here("R/functions.R"))
+load(here::here("data/lipidomics.rda"))
 ```
+
+## Basic statistics
 
 ```{r}
-library(dplyr)
-load(here::here("data/lipidomics.rda"))
 lipidomics %>%
-  select(gender, age) %>%
-  filter(age >= 25)
+  group_by(metabolite) %>%
+  summarise(across(value, list(mean = mean,
+                               sd = sd))) %>%
+  mutate(across(where(is.numeric), round, 1))
+
 ```
-
-## Header
-
--   list one
