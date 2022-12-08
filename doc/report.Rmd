@@ -10,10 +10,10 @@ date: "`r Sys.Date()`"
 ---
 
 ```{r setup, include=FALSE}
+targets::tar_config_set(store = here::here("_targets"))
 library(tidyverse)
 library(targets)
-lipidomics <- targets::tar_read(lipidomics, 
-                                store = here::here("_targets"))
+lipidomics <- targets::tar_read(lipidomics)
 ```
 
 # Abstract
@@ -39,13 +39,12 @@ tar_read(df_stats_by_metabolite,
 ```
 
 ```{r}
-tar_read(fig_gender_by_class,
-         store = here::here("_targets"))
+tar_read(fig_gender_by_class)
+
 ```
 
 ```{r}
-tar_read(fig_metabolite_distribution,
-         store = here::here("_targets"))
+tar_read(fig_metabolite_distribution)
 ```
 
 
