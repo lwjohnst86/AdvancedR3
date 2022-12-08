@@ -1,26 +1,29 @@
-Package: AdvancedR3
 Type: Project
+Package: AdvancedR3
 Version: 0.0.1
+URL: https://github.com/lwjohnst86/AdvancedR3
+BugReports: https://github.com/lwjohnst86/AdvancedR3/issues
+Depends: 
+    R (>= 2.10),
+    tidyverse
 Imports:
     dplyr,
     fs,
+    ggplot2,
     here,
     knitr,
+    readr,
     readxl,
     rmarkdown,
     snakecase,
     stringr,
+    tarchetypes,
     targets,
     tidyr,
     usethis
-Encoding: UTF-8
-Depends: 
-    R (>= 2.10),
-    tidyverse
-LazyData: true
 Suggests: 
     lintr,
     renv,
     styler
-URL: https://github.com/lwjohnst86/AdvancedR3
-BugReports: https://github.com/lwjohnst86/AdvancedR3/issues
+Encoding: UTF-8
+LazyData: true

@@ -11,7 +11,8 @@ editor_options:
 ```{r setup, include=FALSE}
 library(tidyverse)
 source(here::here("R/functions.R"))
-load(here::here("data/lipidomics.rda"))
+lipidomics <- readr::read_csv(here::here("data/lipidomics.csv"),
+                              show_col_types = FALSE)
 ```
 
 ## Basic statistics
@@ -23,4 +24,24 @@ lipidomics %>%
                                sd = sd))) %>%
   mutate(across(where(is.numeric), round, 1))
 
+```
+
+## Figures
+
+```{r}
+gender_by_class_plot <- lipidomics %>%
+  distinct(code, gender, class) %>%
+  ggplot(aes(x = class, fill = gender)) +
+  geom_bar(position = "dodge")
+
+gender_by_class_plot
+```
+
+```{r}
+metabolite_distribution_plot <- lipidomics %>%
+  ggplot(aes(x = value)) +
+  geom_histogram() +
+  facet_wrap(vars(metabolite), scales = "free")
+
+metabolite_distribution_plot
 ```
