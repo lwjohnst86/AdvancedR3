@@ -15,6 +15,7 @@ Imports:
     here,
     knitr,
     parsnip,
+    purrr,
     readr,
     readxl,
     recipes,
