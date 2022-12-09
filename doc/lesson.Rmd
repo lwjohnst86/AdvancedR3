@@ -9,39 +9,65 @@ editor_options:
 ---
 
 ```{r setup, include=FALSE}
+targets::tar_config_set(store = here::here("_targets"))
 library(tidyverse)
+library(tidymodels)
+library(targets)
+lipidomics <- targets::tar_read(lipidomics)
+
 source(here::here("R/functions.R"))
-lipidomics <- readr::read_csv(here::here("data/lipidomics.csv"),
-                              show_col_types = FALSE)
 ```
 
-## Basic statistics
+## Building the model
 
 ```{r}
+log_reg_specs <- logistic_reg() %>% 
+  set_engine("glm")
+
+log_reg_specs
+```
+
+```{r}
+lipidomics_wide <- lipidomics %>% 
+  mutate(metabolite = snakecase::to_snake_case(metabolite)) %>% 
+  pivot_wider(
+    names_from = metabolite,
+    values_from = value,
+    values_fn = mean,
+    names_prefix = "metabolite_"
+  )
+
+lipidomics_wide
+```
+
+```{r}
+
+column_values_to_snakecase <- function(data, cols) {
+  data %>%
+    dplyr::mutate(dplyr::across({{cols}}, snakecase::to_snake_case))
+}
+
 lipidomics %>%
-  group_by(metabolite) %>%
-  summarise(across(value, list(mean = mean,
-                               sd = sd))) %>%
-  mutate(across(where(is.numeric), round, 1))
-
+  metabolite_values_to_snakecase()
 ```
 
-## Figures
+## Transforming data
 
 ```{r}
-gender_by_class_plot <- lipidomics %>%
-  distinct(code, gender, class) %>%
-  ggplot(aes(x = class, fill = gender)) +
-  geom_bar(position = "dodge")
+recipe_specs <- lipidomics_wide %>%
+  create_recipe_spec(metabolite_cholesterol)
 
-gender_by_class_plot
+recipe_specs
 ```
 
 ```{r}
-metabolite_distribution_plot <- lipidomics %>%
-  ggplot(aes(x = value)) +
-  geom_histogram() +
-  facet_wrap(vars(metabolite), scales = "free")
+create_model_workflow(
+  logistic_reg() %>% 
+    set_engine("glm"),
+  lipidomics_wide %>% 
+    create_recipe_spec(metabolite_cholesterol)
+) %>% 
+  fit(lipidomics_wide) %>% 
+  tidy_model_output()
 
-metabolite_distribution_plot
 ```
