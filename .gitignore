@@ -5,3 +5,4 @@ data-raw/nmr-omics/
 .Rbuildignore
 data/lipidomics.csv
 _targets
+doc/report.html
